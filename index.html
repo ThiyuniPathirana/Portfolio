@@ -6,20 +6,388 @@
   <title>My Portfolio</title>
   <link rel="stylesheet" href="style.css?v=1.2"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Experience Section */
+    .experience-timeline {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      padding-left: 40px;
+    }
+    .experience-timeline::before {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+    }
+    .exp-item {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 28px 32px;
+      margin-bottom: 30px;
+      transition: var(--transition);
+    }
+    .exp-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-primary);
+    }
+    .exp-item::before {
+      content: "";
+      position: absolute;
+      left: -37px;
+      top: 34px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+    }
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .exp-role {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .exp-date {
+      font-size: 0.9rem;
+      color: var(--accent-primary);
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.12);
+      padding: 4px 14px;
+      border-radius: 50px;
+      white-space: nowrap;
+    }
+    .exp-company {
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .exp-item ul {
+      list-style: none;
+      padding: 0;
+    }
+    .exp-item ul li {
+      color: var(--text-secondary);
+      padding-left: 22px;
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .exp-item ul li::before {
+      content: "▹";
+      position: absolute;
+      left: 0;
+      color: var(--accent-secondary);
+    }
+    @media (max-width: 768px) {
+      .experience-timeline { padding-left: 28px; }
+      .experience-timeline::before { left: 6px; }
+      .exp-item { padding: 22px 20px; }
+      .exp-item::before { left: -29px; }
+      .exp-date { white-space: normal; font-size: 0.8rem; }
+      .exp-role { font-size: 1.15rem; }
+    }
+  </style>
+  <style>
+    /* ===== Animations ===== */
+    /* Scroll progress bar */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      z-index: 2000;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+      transition: width 0.1s linear;
+    }
+    /* Animated gradient on name */
+    .hero-content h1 span {
+      background-size: 200% auto !important;
+      animation: gradientFlow 5s ease-in-out infinite;
+    }
+    @keyframes gradientFlow {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+    /* Typing role line */
+    .hero-role {
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: -8px 0 20px;
+      min-height: 40px;
+    }
+    .hero-role .typed-text {
+      color: var(--accent-secondary);
+    }
+    /* Pulsing glow on main button */
+    .hero .cta:first-of-type {
+      animation: pulseGlow 2.5s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+      50% { box-shadow: 0 10px 35px rgba(99, 102, 241, 0.65); }
+    }
+    /* Floating profile photo */
+    .about-img {
+      animation: floatY 6s ease-in-out infinite;
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    /* Shine sweep on cards */
+    .card { position: relative; }
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+      transform: skewX(-20deg);
+      pointer-events: none;
+    }
+    .card:hover::after {
+      left: 125%;
+      transition: left 0.8s ease;
+    }
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.reveal-left { transform: translateX(-60px); }
+    .reveal.reveal-right { transform: translateX(60px); }
+    .reveal.reveal-zoom { transform: scale(0.85) translateY(40px); }
+    .reveal.show {
+      opacity: 1;
+      transform: none;
+    }
+    /* Typing cursor */
+    .type-cursor {
+      display: inline-block;
+      margin-left: 2px;
+      color: var(--accent-primary);
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    /* 3D tilt cards */
+    .card-container .card {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    @media (max-width: 768px) {
+      .hero-role { font-size: 20px; }
+    }
+  </style>
+  <style>
+    /* ===== Active nav link ===== */
+    nav ul li a.active { color: var(--text-primary); }
+    nav ul li a.active::after { transform: scaleX(1); transform-origin: left; }
+
+    /* ===== Theme toggle button ===== */
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      transition: var(--transition);
+      margin-top: -8px;
+    }
+    .theme-toggle:hover {
+      transform: rotate(25deg) scale(1.1);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+
+    /* ===== Back to top button ===== */
+    #back-to-top {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 52px;
+      height: 52px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #fff;
+      font-size: 22px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: var(--transition);
+      z-index: 1500;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    #back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(255, 111, 112, 0.45);
+    }
+
+    /* ===== Custom cursor glow ===== */
+    #cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 420px;
+      height: 420px;
+      margin: -210px 0 0 -210px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1400;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, rgba(255, 111, 112, 0.06) 40%, transparent 70%);
+      mix-blend-mode: screen;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    #cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1401;
+      background: #ffffff;
+      mix-blend-mode: difference;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                  opacity 0.3s ease;
+    }
+    /* vanishes when the mouse is on a link or button */
+    #cursor-dot.hide { width: 0; height: 0; opacity: 0 !important; }
+    @media (hover: none) {
+      #cursor-glow, #cursor-dot { display: none; }
+    }
+
+    /* ===== Education badge ===== */
+    .edu-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 22px;
+      margin-right: 14px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(255, 111, 112, 0.15));
+      flex-shrink: 0;
+    }
+    .edu-title-row { display: flex; align-items: center; }
+
+    /* ===== Mobile nav: scroll sideways instead of overlapping ===== */
+    @media (max-width: 768px) {
+      .navbar { justify-content: flex-start; }
+      nav { width: 100%; overflow-x: auto; scrollbar-width: none; }
+      nav::-webkit-scrollbar { display: none; }
+      nav ul { gap: 18px; white-space: nowrap; width: max-content; align-items: center; padding-bottom: 4px; }
+      nav ul li a { font-size: 14px; }
+      #back-to-top { right: 18px; bottom: 18px; width: 46px; height: 46px; }
+      .hero .cta + .cta { margin-left: 0 !important; }
+    }
+
+    /* ===== Light mode ===== */
+    body.light-mode {
+      --bg-dark: #f4f5fb;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --glass-border: rgba(15, 23, 42, 0.1);
+    }
+    /* keep the hero dark so the background animation still looks good */
+    body.light-mode .hero {
+      --bg-dark: #0a0a0b;
+      --bg-card: rgba(255, 255, 255, 0.05);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --glass-border: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+    }
+    body.light-mode .navbar:not(.scrolled) {
+      --text-primary: #ffffff;
+      --text-secondary: #cbd5e1;
+      --bg-card: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.2);
+    }
+    body.light-mode .navbar.scrolled { background: rgba(255, 255, 255, 0.85); }
+    body.light-mode .section-title {
+      background: linear-gradient(135deg, #1e1b4b, var(--accent-primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    body.light-mode .card-container a .card-content p,
+    body.light-mode .card-link .card-content p { color: #0f172a !important; }
+    body.light-mode .card,
+    body.light-mode .exp-item,
+    body.light-mode .contact-card,
+    body.light-mode .project-management ul li {
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+    body.light-mode .project-management ul li:hover { background: rgba(99, 102, 241, 0.06); }
+    body.light-mode .blog-article { background: #ffffff; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06); }
+    body.light-mode .blog-article:hover { background: #ffffff; }
+    body.light-mode #cursor-glow { mix-blend-mode: multiply; opacity: 0.6; }
+    body.light-mode .card::after {
+      background: linear-gradient(120deg, transparent, rgba(99, 102, 241, 0.12), transparent);
+    }
+    body {
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+  </style>
 </head>
 <body>
+  <div id="scroll-progress"></div>
+  <div id="cursor-glow"></div>
+  <div id="cursor-dot"></div>
+  <button id="back-to-top" aria-label="Back to top">↑</button>
   <header class="navbar">
     <nav>
       <ul>
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
-        
-        <li><a href="#certificates">Certificates</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#education">Education</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#certificates">Certificates</a></li>
         <li><a href="#blog">Blogs</a></li>
         <li><a href="#cv">My CV</a></li>
         
         <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-toggle" id="theme-toggle" aria-label="Switch light or dark mode">☀️</button></li>
       </ul>
     </nav>
   </header>
@@ -29,9 +397,11 @@
     <div class="overlay"></div>
     <div class="hero-content">
       <h1>Hello<br><span>I'm Thiyuni Kehara</span></h1>
-      <p>IT professional passionate about user-centered design, efficient workflows, and quality-driven solutions.
+      <h2 class="hero-role">Aspiring <span class="typed-text" id="typed-role">UI/UX Designer</span><span class="type-cursor">|</span></h2>
+      <p>Passionate about user-centered design, efficient workflows, and quality-driven solutions.
         Focused on bridging design, development, and delivery for impactful results.</p>
       <a href="#projects" class="cta">See My Work</a>
+      <a href="assets/Thiyuni%20Pathirana%20CV.pdf" download="Thiyuni_Pathirana_CV.pdf" class="cta" style="margin: 12px 0 0 12px; background: transparent; border: 2px solid var(--accent-primary); box-shadow: none;">Download CV</a>
       
     </div>
   </section>
@@ -44,13 +414,12 @@
       <div class="about-text">
         <h2>About Me</h2>
         <p>
-          Motivated and detail-oriented IT undergraduate at Sri Lanka Institute of Information Technology (SLIIT), 
-          currently pursuing a BSc (Hons) in Information Technology and working as an Intern Web Developer at the 
-          Centre for Defence Research and Development. Skilled in web development with interests in Quality Assurance 
-          (QA), UI/UX design, and project management. Passionate about applying technical knowledge to real-world 
-          projects while contributing to software quality, usability, and effective team coordination. Known for strong 
-          communication, teamwork, and quick learning ability. Eager to gain hands-on industry experience and contribute 
-          to innovative, goal-driven environments.
+          Motivated and detail-oriented IT undergraduate at Sri Lanka Institute of Information Technology (SLIIT),
+          currently pursuing a BSc (Hons) in Information Technology. Completed an internship as an Intern Web Developer
+          at the Centre for Defence Research and Development (CDRD) and worked as an MIS Executive at Nilkamal Eswaran
+          Plastics (Pvt) Ltd. Skilled in web development and UI/UX design, with interests in Quality Assurance (QA),
+          business analysis, and project management. Passionate about creating user-friendly digital products that
+          bridge design and development. Known for strong communication, teamwork, and quick learning ability.
         </p>
 
         <div class="project-management">
@@ -67,7 +436,7 @@
 
           <h3>🛠️ Tools & Platforms</h3>
           <ul class="skills-grid">
-            <li><strong>UI/UX Design:</strong> Figma, Canva, MockFlow, Wireframing</li>
+            <li><strong>UI/UX Design:</strong> Figma, Adobe XD, Canva, MockFlow, Wireframing, Prototyping</li>
             <li><strong>Mobile Tools:</strong> Android Studio (Testing), UI Principles</li>
             <li><strong>Dev Tools:</strong> Eclipse, VS Code, GitHub, RStudio</li>
             <li><strong>Productivity:</strong> MS Word, MS Office, PowerPoint</li>
@@ -84,113 +453,89 @@
       </div>
     </div>
   </section>
-<!--Certificate-->
-  <section id="certificates" class="section">
-  <h2 class="section-title">Certificates</h2>
-  <div class="card-container">
-    
-    <a href="./assets/c1.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/c1.png" alt="Certificate 1" />
-        <div class="card-content">
-          
-          <p>PMI® Authorized On-demand PMP® Exam Prep</p>
-        </div>
-      </div>
-    </a>
+<!--Experience-->
+<section id="experience" class="section">
+  <h2 class="section-title">Experience</h2>
+  <div class="experience-timeline">
 
-    <a href="./assets/8647657_90226771752854717570.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/c2.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>Introduction to JIRA</p>
-        </div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <h3 class="exp-role">MIS Executive</h3>
+        <span class="exp-date">June 2026 – September 2026</span>
       </div>
-    </a>
-     <a href="./assets/c3.png" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/c3.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>Agile Project Management</p>
-        </div>
+      <p class="exp-company">Nilkamal Eswaran Plastics (Pvt) Ltd</p>
+      <ul>
+        <li>Generated and maintained operational and analytical reports to support executive decision-making.</li>
+        <li>Monitored internal database entries and system workflows to ensure data accuracy and integrity.</li>
+        <li>Coordinated between departments to resolve technical, system, and reporting bottlenecks.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <h3 class="exp-role">Intern Web Developer</h3>
+        <span class="exp-date">November 2025 – May 2026</span>
       </div>
-    </a>
-    <a href="./assets/c4.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/c4.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>ClickUp Novice Certificate Exam</p>
-        </div>
-      </div>
-    </a>
-    <a href="./assets/c5.png" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/c5.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>UI/UX Design using Adobe XD</p>
-        </div>
-      </div>
-    </a>
-    
-    <a href="./assets/network.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/net.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>Introduction to the Computer Networking</p>
-        </div>
-      </div>
-    </a>
-    <a href="./assets/testing.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/test.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>Introduction to Software Testing</p>
-        </div>
-      </div>
-    </a>
-    <a href="./assets/quiz_result.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/unia.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>Diploma in UI UX Design Process</p>
-        </div>
-      </div>
-    </a>
-    <a href="./assets/Figma.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/figma.png" alt="Certificate 2" />
-        <div class="card-content">
-          
-          <p>Introduction to Figma</p>
-        </div>
-      </div>
-    </a>
-    <a href="./assets/MongoDB1.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/mongo1.png" alt="MongoDB Certificate" />
-        <div class="card-content">
-          <p>MongoDB Node.js Developer Path</p>
-        </div>
-      </div>
-    </a>
-    <a href="./assets/mongo2.pdf" target="_blank" class="card-link">
-      <div class="card">
-        <img src="./assets/mongo2.png" alt="MongoDB Atlas Certificate" />
-        <div class="card-content">
-          <p>Getting Started with MongoDB Atlas</p>
-        </div>
-      </div>
-    </a>
+      <p class="exp-company">Centre for Defence Research and Development (CDRD)</p>
+      <ul>
+        <li>Developed internal web applications to improve workflow efficiency.</li>
+        <li>Created and enhanced web interfaces to improve usability and reduce errors.</li>
+        <li>Built features and functionalities to meet project requirements and optimize performance.</li>
+      </ul>
+    </div>
 
   </div>
 </section>
+
+<!--Education-->
+<section id="education" class="section">
+  <h2 class="section-title">Education</h2>
+  <div class="experience-timeline">
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="edu-title-row">
+          <span class="edu-badge">🎓</span>
+          <h3 class="exp-role">BSc (Hons) in Information Technology</h3>
+        </div>
+        <span class="exp-date">Expected 2027</span>
+      </div>
+      <p class="exp-company">Sri Lanka Institute of Information Technology (SLIIT)</p>
+      <ul>
+        <li>Currently a fourth-year undergraduate.</li>
+        <li>Coursework and projects in full-stack web development, UI/UX design, software testing, and project management.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="edu-title-row">
+          <span class="edu-badge">📜</span>
+          <h3 class="exp-role">Diploma in English</h3>
+        </div>
+        <span class="exp-date">Completed</span>
+      </div>
+      <p class="exp-company">Sabaragamuwa University of Sri Lanka</p>
+      <ul>
+        <li>Strengthened written and spoken English for professional communication.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div class="edu-title-row">
+          <span class="edu-badge">🏫</span>
+          <h3 class="exp-role">G.C.E. Advanced Level – Biology Stream</h3>
+        </div>
+        <span class="exp-date">2020 &amp; 2021</span>
+      </div>
+      <p class="exp-company">Ferguson High School, Ratnapura</p>
+    </div>
+
+  </div>
+</section>
+
+<!--Projects-->
 <section id="projects" class="section">
   <h2 class="section-title">Projects</h2>
   <div class="card-container">
@@ -236,7 +581,7 @@
         </div>
       </div>
     </a>
-    <a href="./assets/Wordlab Jira.pdf" target="_blank" class="card-link">
+    <a href="./assets/Wordlab%20Jira.pdf" target="_blank" class="card-link">
       <div class="card">
         <img src="./assets/jira_report.png" alt="WordLab Jira Report" />
         <div class="card-content">
@@ -263,6 +608,113 @@
   </div>
 </section>
 
+<!--Certificate-->
+  <section id="certificates" class="section">
+  <h2 class="section-title">Certificates</h2>
+  <div class="card-container">
+    
+    <a href="./assets/c1.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/c1.png" alt="PMP Exam Prep Certificate" />
+        <div class="card-content">
+          
+          <p>PMI® Authorized On-demand PMP® Exam Prep</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="./assets/8647657_90226771752854717570.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/c2.png" alt="Introduction to JIRA Certificate" />
+        <div class="card-content">
+          
+          <p>Introduction to JIRA</p>
+        </div>
+      </div>
+    </a>
+     <a href="./assets/c3.png" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/c3.png" alt="Agile Project Management Certificate" />
+        <div class="card-content">
+          
+          <p>Agile Project Management</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/c4.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/c4.png" alt="ClickUp Novice Certificate" />
+        <div class="card-content">
+          
+          <p>ClickUp Novice Certificate Exam</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/c5.png" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/c5.png" alt="UI/UX Design using Adobe XD Certificate" />
+        <div class="card-content">
+          
+          <p>UI/UX Design using Adobe XD</p>
+        </div>
+      </div>
+    </a>
+    
+    <a href="./assets/network.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/net.png" alt="Computer Networking Certificate" />
+        <div class="card-content">
+          
+          <p>Introduction to the Computer Networking</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/testing.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/test.png" alt="Software Testing Certificate" />
+        <div class="card-content">
+          
+          <p>Introduction to Software Testing</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/quiz_result.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/unia.png" alt="Diploma in UI UX Design Process Certificate" />
+        <div class="card-content">
+          
+          <p>Diploma in UI UX Design Process</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/Figma.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/figma.png" alt="Introduction to Figma Certificate" />
+        <div class="card-content">
+          
+          <p>Introduction to Figma</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/MongoDB1.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/mongo1.png" alt="MongoDB Certificate" />
+        <div class="card-content">
+          <p>MongoDB Node.js Developer Path</p>
+        </div>
+      </div>
+    </a>
+    <a href="./assets/mongo2.pdf" target="_blank" class="card-link">
+      <div class="card">
+        <img src="./assets/mongo2.png" alt="MongoDB Atlas Certificate" />
+        <div class="card-content">
+          <p>Getting Started with MongoDB Atlas</p>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
 <section id="blog" class="section">
   <h2 class="section-title">Blogs</h2>
     <article class="blog-article">
@@ -389,7 +841,7 @@
           <br><br>
           Accompanying this shift is the rise of the <strong>Spatial Web</strong>. The internet will move beyond flat screens and into our physical environments through Augmented Reality (AR) and Virtual Reality (VR). Imagine walking through a city and seeing digital layers of information—historical facts, real-time navigation, or even virtual storefronts—seamlessly integrated into your vision. The <strong>Metaverse</strong> is not just a game; it is the next iteration of social and professional presence, where distance is irrelevant and collaboration is truly immersive. ✨
           <br><br>
-          <strong>Artificial Intelligence (AI)</strong> will become the invisible fabric that connects everything. From personalized digital twins that manage our schedules to smart cities that optimize energy consumption in real-time, AI will transform the internet into an proactive entity that anticipates our needs. 🧠 Combined with the ultra-low latency of <strong>6G connectivity</strong>, which is expected to be 100 times faster than 5G, we will see the true potential of the <strong>Internet of Everything</strong>. Every object, from your coffee maker to industrial machinery, will be part of a vast, intelligent network.
+          <strong>Artificial Intelligence (AI)</strong> will become the invisible fabric that connects everything. From personalized digital twins that manage our schedules to smart cities that optimize energy consumption in real-time, AI will transform the internet into a proactive entity that anticipates our needs. 🧠 Combined with the ultra-low latency of <strong>6G connectivity</strong>, which is expected to be 100 times faster than 5G, we will see the true potential of the <strong>Internet of Everything</strong>. Every object, from your coffee maker to industrial machinery, will be part of a vast, intelligent network.
           <br><br>
           However, this future also brings challenges. <strong>Cybersecurity</strong> and <strong>Digital Ethics</strong> will become more critical than ever. As our lives become more deeply intertwined with the digital realm, protecting our privacy and ensuring the ethical use of AI will be the defining struggles of the next generation. We must build an internet that is not only faster and more immersive but also more inclusive and secure for everyone. 🛡️
           <br><br>
@@ -485,25 +937,311 @@
 <section class="cv-download" id="cv">
   <h2 class="section-title">Download My CV</h2>
   <p>If you'd like to know more about my qualifications and experience, feel free to download my resume.</p>
-  <a href="assets/cv1.pdf" download class="cv-btn">Download CV</a>
+  <a href="assets/Thiyuni%20Pathirana%20CV.pdf" download="Thiyuni_Pathirana_CV.pdf" class="cv-btn">Download CV</a>
 </section>
 
 <section id="contact" class="section">
+  <style>
+    .contact-wrap { max-width: 1000px; margin: 0 auto; text-align: center; }
+    .contact-intro {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: -40px auto 50px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 32px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(255, 111, 112, 0.12));
+      opacity: 0;
+      transition: var(--transition);
+    }
+    .contact-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 111, 112, 0.6);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 25px rgba(99, 102, 241, 0.25);
+    }
+    .contact-card:hover::before { opacity: 1; }
+    .contact-icon {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+    }
+    .contact-icon svg { width: 26px; height: 26px; fill: #fff; }
+    .contact-label {
+      position: relative;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-secondary);
+    }
+    .contact-value {
+      position: relative;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+    .contact-btn {
+      display: inline-block;
+      padding: 16px 44px;
+      border-radius: 50px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.35);
+      transition: var(--transition);
+    }
+    .contact-wrap a, .contact-wrap a:hover { text-decoration: none; }
+    .contact-wrap .contact-btn, .contact-wrap .contact-btn:hover { color: #fff; }
+    .contact-wrap .contact-label { font-weight: 500; }
+    .contact-wrap .contact-value { color: var(--text-primary); }
+    .contact-value.small { font-size: 0.82rem; }
+    .contact-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(255, 111, 112, 0.4);
+    }
+  </style>
+
   <h2 class="section-title">Contact Me</h2>
-  <div class="contact-container">
-    <div class="contact-info">
-      <p><strong>Email:</strong> <a href="pathiranathiyuni@gmail.com">pathiranathiyuni@gmail.com</a></p>
-      <p><strong>Phone:</strong> <a href="tel:+94716593224">+94 716 593 224</a></p>
-      <p><strong>Location:</strong> Colombo, Sri Lanka</p>
-      
-      <!-- LinkedIn Link below instead of a separate page -->
-      <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/thiyuni-kehara-sesadee-pathirana-344404320" target="_blank">https://linkedin.com/in/thiyuni-kehara-sesadee-pathirana-344404320</a></p>
-      
-      
+  <div class="contact-wrap contact-info">
+    <p class="contact-intro">Have an opportunity or a project in mind? I'd love to hear from you. Let's create something great together!</p>
+
+    <div class="contact-grid">
+      <a class="contact-card" href="mailto:pathiranathiyuni@gmail.com">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.2-8 5-8-5V6l8 5 8-5v2.2z"/></svg>
+        </span>
+        <span class="contact-label">Email</span>
+        <span class="contact-value small">pathiranathiyuni@gmail.com</span>
+      </a>
+
+      <a class="contact-card" href="tel:+94716593224">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg>
+        </span>
+        <span class="contact-label">Phone</span>
+        <span class="contact-value">+94 716 593 224</span>
+      </a>
+
+      <div class="contact-card">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        </span>
+        <span class="contact-label">Location</span>
+        <span class="contact-value">Colombo, Sri Lanka</span>
+      </div>
+
+      <a class="contact-card" href="https://linkedin.com/in/thiyuni-kehara-sesadee-pathirana-344404320" target="_blank">
+        <span class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.3 18.3V10H5.7v8.3h2.6zM7 8.8a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm11.3 9.5v-4.6c0-2.4-1.3-3.6-3.1-3.6a2.7 2.7 0 0 0-2.4 1.3V10h-2.6v8.3h2.6v-4.4c0-1.2.2-2.3 1.7-2.3s1.5 1.4 1.5 2.4v4.3h2.3z"/></svg>
+        </span>
+        <span class="contact-label">LinkedIn</span>
+        <span class="contact-value">Connect with me</span>
+      </a>
     </div>
+
+    <a class="contact-btn" href="mailto:pathiranathiyuni@gmail.com">Say Hello 👋</a>
   </div>
 </section>
 
   <script src="script.js"></script>
+
+  <!-- Animations (no external libraries needed) -->
+  <script>
+    (function () {
+      // 1. Typing effect in the hero
+      const typedEl = document.getElementById('typed-role');
+      const words = ['UI/UX Designer', 'Front-End Developer', 'React Developer', 'Business Analyst'];
+      let wordIndex = 0;
+      let charIndex = words[0].length;
+      let deleting = true;
+
+      function typeLoop() {
+        const word = words[wordIndex];
+        if (deleting) {
+          charIndex--;
+          typedEl.textContent = word.substring(0, charIndex);
+          if (charIndex === 0) {
+            deleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+          }
+          setTimeout(typeLoop, 45);
+        } else {
+          const next = words[wordIndex];
+          charIndex++;
+          typedEl.textContent = next.substring(0, charIndex);
+          if (charIndex === next.length) {
+            deleting = true;
+            setTimeout(typeLoop, 1600);
+          } else {
+            setTimeout(typeLoop, 85);
+          }
+        }
+      }
+      if (typedEl) setTimeout(typeLoop, 1600);
+
+      // 2. Scroll reveal: elements slide / fade in when they come on screen
+      const revealGroups = [
+        ['.section-title', ''],
+        ['.about-img-wrapper', 'reveal-left'],
+        ['.about-text', 'reveal-right'],
+        ['.exp-item', ''],
+        ['#projects .card-link', 'reveal-zoom'],
+        ['#certificates .card-link', ''],
+        ['.blog-article', ''],
+        ['.cv-download', 'reveal-zoom'],
+        ['.contact-card', 'reveal-zoom']
+      ];
+      const revealEls = [];
+      revealGroups.forEach(([selector, extra]) => {
+        document.querySelectorAll(selector).forEach((el, i) => {
+          el.classList.add('reveal');
+          if (extra) el.classList.add(extra);
+          el.style.transitionDelay = ((i % 3) * 0.15) + 's';
+          revealEls.push(el);
+        });
+      });
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach((el) => observer.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('show'));
+      }
+
+      // 3. 3D tilt on project and certificate cards
+      document.querySelectorAll('.card-container .card').forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transition = 'transform 0.1s ease-out';
+          card.style.transform =
+            'perspective(900px) rotateX(' + (-y * 12) + 'deg) rotateY(' + (x * 12) + 'deg) translateY(-10px) scale(1.03)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transition = 'transform 0.5s ease';
+          card.style.transform = '';
+        });
+      });
+
+      // 4. Scroll progress bar
+      const bar = document.getElementById('scroll-progress');
+      const updateBar = () => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+      };
+      window.addEventListener('scroll', updateBar, { passive: true });
+      updateBar();
+
+      // 5. Active nav link while scrolling
+      const navLinks = document.querySelectorAll('nav ul li a[href^="#"]');
+      const sections = [...navLinks]
+        .map((a) => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+      const setActive = () => {
+        let current = sections[0];
+        sections.forEach((sec) => {
+          if (window.scrollY + 160 >= sec.offsetTop) current = sec;
+        });
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 5) {
+          current = sections[sections.length - 1];
+        }
+        navLinks.forEach((a) => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+        });
+      };
+      window.addEventListener('scroll', setActive, { passive: true });
+      setActive();
+
+      // 6. Back to top button
+      const topBtn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        topBtn.classList.toggle('visible', window.scrollY > 600);
+      }, { passive: true });
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // 7. Custom cursor glow
+      const glow = document.getElementById('cursor-glow');
+      const dot = document.getElementById('cursor-dot');
+      if (window.matchMedia('(hover: hover)').matches) {
+        let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          dot.style.left = mouseX + 'px';
+          dot.style.top = mouseY + 'px';
+          glow.style.opacity = '1';
+          dot.style.opacity = '1';
+        });
+        document.addEventListener('mouseleave', () => {
+          glow.style.opacity = '0';
+          dot.style.opacity = '0';
+        });
+        const followGlow = () => {
+          glowX += (mouseX - glowX) * 0.12;
+          glowY += (mouseY - glowY) * 0.12;
+          glow.style.left = glowX + 'px';
+          glow.style.top = glowY + 'px';
+          requestAnimationFrame(followGlow);
+        };
+        followGlow();
+        document.querySelectorAll('a, button').forEach((el) => {
+          el.addEventListener('mouseenter', () => dot.classList.add('hide'));
+          el.addEventListener('mouseleave', () => dot.classList.remove('hide'));
+        });
+      }
+
+      // 8. Dark / light mode toggle (always opens in dark mode)
+      const themeBtn = document.getElementById('theme-toggle');
+      const applyTheme = (mode) => {
+        document.body.classList.toggle('light-mode', mode === 'light');
+        themeBtn.textContent = mode === 'light' ? '🌙' : '☀️';
+      };
+      applyTheme('dark');
+      try { localStorage.removeItem('theme'); } catch (e) {}
+      themeBtn.addEventListener('click', () => {
+        applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
+      });
+    })();
+  </script>
 </body>
 </html>
